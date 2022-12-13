@@ -1,12 +1,12 @@
 class BooksController < ApplicationController
   def create
-    @book = Book.new(book_params)
+    @book  = Book.new(book_params)
+    @books = Book.all
+
     if @book.save
       flash[:notice] = "Successfully Created!!"
-      @books = Book.all
       render :index
     else
-      @books = Book.all
       flash[:notice] = "Error invalied Text..."
       render :index
     end
@@ -18,9 +18,26 @@ class BooksController < ApplicationController
 
 
   def show
+    @book = Book.find(params[:id])
   end
 
   def edit
+    @book = Book.find(params[:id])
+  end
+
+  def update
+    book = Book.find(params[:id])
+    if book.update(book_params)
+      flash[:notice] = "Successfully Update!!"
+      redirect_to book_path(book.id)
+    else
+      flash[:notice] = "Error invalied Text..."
+      render :edit
+    end
+  end
+
+  def destory
+
   end
 
   private
